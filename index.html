@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REVELA - Acceso Privado</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0d0d0d;
+      color: #d4af37;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      overflow: hidden;
+      transition: background 1s;
+    }
+    .hidden { display: none; }
+    .form-container {
+      width: 90%;
+      max-width: 400px;
+      padding: 20px;
+      background: #1a1a1a;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #d4af37;
+      animation: fadeIn 1s ease-in-out;
+    }
+    input, button {
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #d4af37;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    button:hover {
+      transform: scale(1.05);
+    }
+    .progress-bar {
+      width: 100%;
+      background-color: #444;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+    .progress {
+      height: 20px;
+      background-color: #d4af37;
+      width: 0%;
+      text-align: center;
+      line-height: 20px;
+      color: black;
+      transition: width 0.3s ease-in-out;
+    }
+    .blurred-img {
+      filter: blur(6px);
+      margin-top: 20px;
+      width: 100%;
+      height: 100px;
+      background-color: #222;
+      color: #d4af37;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+<div class="form-container" id="login">
+  <h2>Inicio de Sesión</h2>
+  <input type="text" id="usuario" placeholder="Usuario">
+  <input type="password" id="clave" placeholder="Contraseña">
+  <button id="loginBtn" class="hidden">Iniciar sesión</button>
+</div>
+
+<div class="form-container hidden" id="formulario">
+  <h2>Datos de la víctima</h2>
+  <input type="text" id="nombre" placeholder="Nombre de la víctima">
+  <input type="text" id="movil" placeholder="# Móvil de la víctima">
+  <button onclick="mostrarEscaneo()">Escanear</button>
+</div>
+
+<div class="form-container hidden" id="escaner">
+  <h2 id="victima"></h2>
+  <p id="numero"></p>
+  <p>Analizando información de la víctima...</p>
+  <div class="progress-bar">
+    <div class="progress" id="progressBar">0%</div>
+  </div>
+  <div class="blurred-img">"Ya mi pareja se fue, puedes venir acá"</div>
+  <div class="blurred-img">"Voy saliendo, espérame en el sitio de siempre"</div>
+  <div class="blurred-img">"No puedo hablar ahora, está conmigo"</div>
+</div>
+
+<script>
+  const usuarioInput = document.getElementById('usuario');
+  const claveInput = document.getElementById('clave');
+  const loginBtn = document.getElementById('loginBtn');
+  usuarioInput.addEventListener('input', validarLogin);
+  claveInput.addEventListener('input', validarLogin);
+
+  function validarLogin() {
+    if (usuarioInput.value === 'anonimo886' && claveInput.value === 'qwerty86') {
+      loginBtn.classList.remove('hidden');
+    } else {
+      loginBtn.classList.add('hidden');
+    }
+  }
+
+  loginBtn.onclick = () => {
+    document.getElementById('login').classList.add('hidden');
+    document.getElementById('formulario').classList.remove('hidden');
+  };
+
+  function mostrarEscaneo() {
+    const nombre = document.getElementById('nombre').value;
+    const movil = document.getElementById('movil').value;
+    if (!nombre || !movil) return;
+    document.getElementById('formulario').classList.add('hidden');
+    document.getElementById('escaner').classList.remove('hidden');
+    document.getElementById('victima').innerText = `Nombre: ${nombre}`;
+    document.getElementById('numero').innerText = `Móvil: ${movil}`;
+    iniciarBarra();
+  }
+
+  function iniciarBarra() {
+    let progreso = 0;
+    const bar = document.getElementById('progressBar');
+    const intervalo = setInterval(() => {
+      progreso++;
+      bar.style.width = progreso + '%';
+      bar.innerText = progreso + '%';
+      if (progreso >= 100) clearInterval(intervalo);
+    }, 30000);
+  }
+</script>
+</body>
+</html>
